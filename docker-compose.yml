@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql # 선택
+    networks:
+      - mynetwork
+
+  backend:
+    build:
+      context: ./be
+    container_name: be
+    volumes:
+      - ./be:/app  # 🔥 로컬 소스를 컨테이너에 연결!
+    working_dir: /app
+    command: npm run start:dev  # 🔥 NestJS 개발모드
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+
+  frontend:
+    build:
+      context: ./fe
+    container_name: fe
+    volumes:
+      - ./fe:/app
+      - /app/node_modules  # ✅ 컨테이너 내부 node_modules 덮지 않게 설정
+    working_dir: /app
+    command: npm run dev  # 🔥 Next.js 개발모드
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - mynetwork
+
+
+volumes:
+  pgdata:
+
+networks:
+  mynetwork:
+    driver: bridge
