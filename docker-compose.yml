@@ -26,7 +26,7 @@ services:
     working_dir: /app
     command: npm run start:dev  # 🔥 NestJS 개발모드
     ports:
-      - "5000:5000"
+      - "5001:5001"
     depends_on:
       - db
     networks:

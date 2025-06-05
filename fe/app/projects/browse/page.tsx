@@ -1,7 +1,8 @@
+'use client';
 import React from "react";
 
 async function getProjects() {
-  const res = await fetch("http://localhost:3000/projects", { cache: "no-store" });
+  const res = await fetch("http://localhost:5001/projects", { cache: "no-store" });
   console.log(res);
   if (!res.ok) throw new Error("프로젝트 목록을 불러오지 못했습니다");
   return res.json();
