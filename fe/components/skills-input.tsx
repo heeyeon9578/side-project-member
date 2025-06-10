@@ -8,8 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { X } from "lucide-react"
 
-export function SkillsInput() {
-  const [skills, setSkills] = useState<string[]>([])
+export function SkillsInput({ skills, setSkills }: { skills: string[], setSkills: (skills: string[]) => void }) {
   const [inputValue, setInputValue] = useState("")
 
   const addSkill = () => {

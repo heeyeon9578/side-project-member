@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import type { Project } from "@/lib/types"
+import type { Project } from "@/lib/type/projectType"
 import { Calendar, Users } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -25,12 +25,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
               <h3 className="font-bold text-xl line-clamp-1">{project.title}</h3>
               <div className="flex -space-x-2">
                 <div className="relative w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                  <Image
-                    src={project.owner.avatar || "/placeholder.svg"}
-                    alt={project.owner.name}
-                    fill
-                    className="object-cover"
-                  />
+                  {project.owner ? (
+                    <Image src={project.owner.avatar} alt={project.owner.name} fill className="object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <span className="text-sm text-gray-500">No Avatar</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

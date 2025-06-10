@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import type { Member } from "@/lib/types"
+import type { Member } from "@/lib/type/memberType"
 import { Briefcase, MapPin } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -31,7 +31,7 @@ export function MemberCard({ member }: MemberCardProps) {
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-1 mb-4">
-              {member.skills.slice(0, 5).map((skill) => (
+              {member.skills.slice(0, 5).map((skill: string) => (
                 <Badge key={skill} variant="secondary" className="text-xs">
                   {skill}
                 </Badge>

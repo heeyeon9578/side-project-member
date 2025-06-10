@@ -1,5 +1,5 @@
 import axiosInstance from '@/lib/api/axiosInstance';
-import { Project } from '@/lib/types'; // 필요 시 타입 선언 따로
+import { CreateProjectRequest, Project, UpdateProjectRequest } from '@/lib/type/projectType'; // 필요 시 타입 선언 따로
 
 const API_BASE = '/projects'; // NestJS API 경로
 
@@ -9,6 +9,8 @@ const API_BASE = '/projects'; // NestJS API 경로
  */
 export const fetchProjects = async (): Promise<Project[]> => {
     const res = await axiosInstance.get(API_BASE);
+
+    console.log(res.data);
     return res.data;
 };
 
@@ -27,8 +29,9 @@ export const fetchProject = async (id: number): Promise<Project> => {
  * @param data 프로젝트 데이터
  * @returns 생성된 프로젝트
  */
-export const createProject = async (data: Partial<Project>) => {
+export const createProject = async (data: CreateProjectRequest) => {
     const res = await axiosInstance.post(API_BASE, data);
+    console.log(res.data);
     return res.data;
 };
 
@@ -38,7 +41,7 @@ export const createProject = async (data: Partial<Project>) => {
  * @param data 수정할 프로젝트 데이터
  * @returns 수정된 프로젝트
  */
-export const updateProject = async (id: number, data: Partial<Project>) => {
+export const updateProject = async (id: number, data: UpdateProjectRequest) => {
     const res = await axiosInstance.put(`${API_BASE}/${id}`, data);
     return res.data;
 };

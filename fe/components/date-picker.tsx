@@ -8,9 +8,14 @@ import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
-export function DatePicker() {
+export function DatePicker({ deadline, setDeadline }: { deadline: string | undefined, setDeadline: (deadline: string) => void }) {
   const [date, setDate] = React.useState<Date>()
-
+  const handleDateChange = (date: Date | undefined) => {
+    if (date) {
+      setDate(date) 
+      setDeadline(format(date, "yyyy-MM-dd"))
+    }
+  }
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -23,7 +28,7 @@ export function DatePicker() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+        <Calendar mode="single" selected={date} onSelect={handleDateChange} initialFocus />
       </PopoverContent>
     </Popover>
   )

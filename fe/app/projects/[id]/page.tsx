@@ -37,7 +37,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           <div>
             <h1 className="text-3xl font-bold mb-4">{project.title}</h1>
             <div className="flex flex-wrap gap-2 mb-6">
-              {project.skills.map((skill) => (
+              {project.skills.map((skill: string) => (
                 <Badge key={skill} variant="secondary">
                   {skill}
                 </Badge>
@@ -54,7 +54,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
               <h2>우리가 찾고 있는 팀원</h2>
               <ul>
-                {project.positions.map((position) => (
+                {project.positions.map((position: string) => (
                   <li key={position}>{position}</li>
                 ))}
               </ul>
@@ -75,12 +75,13 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             <CardContent className="pt-6">
               <div className="flex items-center gap-4 mb-6">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden">
-                  <Image
-                    src={project.owner.avatar || "/placeholder.svg"}
-                    alt={project.owner.name}
-                    fill
-                    className="object-cover"
-                  />
+                  {project.owner ? (
+                    <Image src={project.owner.avatar} alt={project.owner.name} fill className="object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <span className="text-sm text-gray-500">No Avatar</span>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <h3 className="font-medium">{project.owner.name}</h3>
