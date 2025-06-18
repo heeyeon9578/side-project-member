@@ -9,8 +9,20 @@ import { useProjects } from "@/app/queries/projectQueries"
 import { Project } from "@/lib/type/projectType";
 
 export function ProjectList() {
-  const { data: projects } = useProjects()
-
+  const { data: projects } = useProjects();
+  console.log(`
+    
+    
+    
+    
+    
+    projects
+    
+    
+    
+    
+    
+    `, projects);
   // const loadMore = () => {
   //   setVisibleProjects((prev) => prev + 6);
   // }

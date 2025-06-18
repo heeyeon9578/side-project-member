@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -6,8 +7,29 @@ import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Github } from "lucide-react"
 import Link from "next/link"
-
+import { useCreateUser } from "@/app/queries/userQueries"
+import { CreateUserInput } from "@/lib/type/user"
+import { useState } from "react"
 export default function RegisterPage() {
+  const { mutate: createUser } = useCreateUser();
+
+  const [formData, setFormData] = useState<CreateUserInput>({
+    name: "",
+    email: "",
+    password: "",
+    //confirmPassword: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    createUser(formData);
+  };
+
   return (
     <div className="container max-w-md mx-auto px-4 py-16">
       <Card>
@@ -16,27 +38,25 @@ export default function RegisterPage() {
           <CardDescription className="text-center">계정을 만들어 프로젝트를 찾거나 등록하세요</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="firstName">이름</Label>
-              <Input id="firstName" placeholder="홍" />
+              <Input id="name" placeholder="홍길동" name="name" value={formData.name} onChange={handleChange} />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="lastName">성</Label>
-              <Input id="lastName" placeholder="길동" />
-            </div>
+
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">이메일</Label>
-            <Input id="email" type="email" placeholder="example@email.com" />
+            <Input id="email" type="email" placeholder="example@email.com" name="email" value={formData.email} onChange={handleChange} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">비밀번호</Label>
-            <Input id="password" type="password" />
+            <Input id="password" type="password" name="password" value={formData.password} onChange={handleChange} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="confirmPassword">비밀번호 확인</Label>
-            <Input id="confirmPassword" type="password" />
+            {/* <Input id="confirmPassword" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} />   */}
           </div>
           <div className="flex items-center space-x-2">
             <Checkbox id="terms" />
@@ -56,7 +76,8 @@ export default function RegisterPage() {
               </span>
             </label>
           </div>
-          <Button className="w-full">회원가입</Button>
+          <Button className="w-full" type="submit">회원가입</Button>
+          </form>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <Separator />
