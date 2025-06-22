@@ -2,8 +2,8 @@
 
 *Automatically synced with your [v0.dev](https://v0.dev) deployments*
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/heeyeon9578s-projects/v0-front-end-website-design)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/42DK8KoAnz4)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/heeyeon9578s-/v0-front-end-website-design)
+[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat//42DK8KoAnz4)
 
 ## Overview
 
@@ -14,13 +14,13 @@ Any changes you make to your deployed app will be automatically pushed to this r
 
 Your project is live at:
 
-**[https://vercel.com/heeyeon9578s-projects/v0-front-end-website-design](https://vercel.com/heeyeon9578s-projects/v0-front-end-website-design)**
+**[https://vercel.com/heeyeon9578s-/v0-front-end-website-design](https://vercel.com/heeyeon9578s-/v0-front-end-website-design)**
 
 ## Build your app
 
 Continue building your app on:
 
-**[https://v0.dev/chat/projects/42DK8KoAnz4](https://v0.dev/chat/projects/42DK8KoAnz4)**
+**[https://v0.dev/chat//42DK8KoAnz4](https://v0.dev/chat//42DK8KoAnz4)**
 
 ## How It Works
 
