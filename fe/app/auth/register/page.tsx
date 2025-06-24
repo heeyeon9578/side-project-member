@@ -8,26 +8,58 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Github } from "lucide-react"
 import Link from "next/link"
 import { useCreateUser } from "@/app/queries/userQueries"
-import { CreateUserInput } from "@/lib/type/user"
-import { useState } from "react"
+import { RegisterUserInput } from "@/lib/type/user"
+import { useEffect, useState } from "react"
 export default function RegisterPage() {
   const { mutate: createUser } = useCreateUser();
 
-  const [formData, setFormData] = useState<CreateUserInput>({
+  const [formData, setFormData] = useState<RegisterUserInput>({
     name: "",
     email: "",
     password: "",
-    //confirmPassword: "",
   });
+  const [isFormValid, setIsFormValid] = useState(false);
+  // 약관 동의 상태 추가 📝
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  useEffect(() => {
+    setIsFormValid(formData.password === confirmPassword);
+  }, [formData, confirmPassword]);
+  // 유효성 검사 로직 한 곳에 집중
 
+  useEffect(() => {
+    console.log("🔍 [유효성 검사] formData, acceptedTerms →", formData, acceptedTerms);
+    const { name, email, password } = formData;
+    const allFilled =
+      name.trim() !== "" &&
+      email.trim() !== "" &&
+      password.trim() !== "" &&
+      confirmPassword.trim() !== "" &&
+      acceptedTerms;
+    const passwordsMatch = password === confirmPassword;
+    setIsFormValid(allFilled && passwordsMatch);
+    console.log("✔️ [isFormValid] =", allFilled && passwordsMatch);
+  }, [formData, acceptedTerms, confirmPassword]);
+  /**
+   * 입력 값 변경 시 상태 업데이트
+   * @param e 입력 이벤트
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-
+  /**
+   * 회원가입 제출 시 사용자 생성
+   * @param e 폼 제출 이벤트
+   */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createUser(formData);
+  };
+
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
+    setIsFormValid(formData.password === e.target.value);
   };
 
   return (
@@ -35,48 +67,48 @@ export default function RegisterPage() {
       <Card>
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">회원가입</CardTitle>
-          <CardDescription className="text-center">계정을 만들어 프로젝트를 찾거나 등록하세요</CardDescription>
+
         </CardHeader>
         <CardContent className="space-y-4">
           <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="firstName">이름</Label>
-              <Input id="name" placeholder="홍길동" name="name" value={formData.name} onChange={handleChange} />
-            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="firstName">이름</Label>
+                <Input id="name" placeholder="홍길동" name="name" value={formData.name} onChange={handleChange} />
+              </div>
 
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">이메일</Label>
-            <Input id="email" type="email" placeholder="example@email.com" name="email" value={formData.email} onChange={handleChange} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">비밀번호</Label>
-            <Input id="password" type="password" name="password" value={formData.password} onChange={handleChange} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="confirmPassword">비밀번호 확인</Label>
-            {/* <Input id="confirmPassword" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} />   */}
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox id="terms" />
-            <label
-              htmlFor="terms"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              <span>
-                <Link href="/terms" className="text-primary hover:underline">
-                  이용약관
-                </Link>
-                과{" "}
-                <Link href="/privacy" className="text-primary hover:underline">
-                  개인정보처리방침
-                </Link>
-                에 동의합니다
-              </span>
-            </label>
-          </div>
-          <Button className="w-full" type="submit">회원가입</Button>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">이메일</Label>
+              <Input id="email" type="email" placeholder="example@email.com" name="email" value={formData.email} onChange={handleChange} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">비밀번호</Label>
+              <Input id="password" type="password" name="password" value={formData.password} onChange={handleChange} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">비밀번호 확인</Label>
+              <Input id="confirmPassword" type="password" name="confirmPassword" value={confirmPassword} onChange={handleConfirmPasswordChange} />
+            </div>
+            <div className="flex items-center space-x-2 space-y-2">
+              <Checkbox id="terms" checked={acceptedTerms} onCheckedChange={(checked) => setAcceptedTerms(checked === "indeterminate" ? false : checked)} />
+              <label
+                htmlFor="terms"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                <span>
+                  <Link href="/terms" className="text-primary hover:underline">
+                    이용약관
+                  </Link>
+                  과{" "}
+                  <Link href="/privacy" className="text-primary hover:underline">
+                    개인정보처리방침
+                  </Link>
+                  에 동의합니다
+                </span>
+              </label>
+            </div>
+            <Button className="w-full" type="submit" disabled={!isFormValid}>회원가입</Button>
           </form>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">

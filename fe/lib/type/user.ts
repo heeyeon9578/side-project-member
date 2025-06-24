@@ -12,7 +12,6 @@ export interface CreateUserInput {
     name: string;
     email: string;
     password: string;
-    //confirmPassword: string;
     avatar?: string;
     bio?: string;
 }
@@ -21,7 +20,12 @@ export interface UpdateUserInput {
     name?: string;
     email?: string;
     password?: string;
-   // confirmPassword?: string;
     avatar?: string;
     bio?: string;
+}
+
+export interface RegisterUserInput {
+    name: string;
+    email: string;
+    password: string;
 }
