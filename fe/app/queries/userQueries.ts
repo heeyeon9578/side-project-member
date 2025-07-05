@@ -28,13 +28,14 @@ export const useUser = (id: number) => {
 };
 
 /** 사용자 생성 */
-export const useCreateUser = () => {
+export const useCreateUser = (options?: { onSuccess?: (data: any, variables: any, context: any) => void }) => {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: (data: CreateUserInput) => createUser(data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['users'] });
+        onSuccess: (data, variables, context) => {
+            queryClient.invalidateQueries({ queryKey: ['users'] }); // 모든 사용자 목록 조회 캐시 무효화
+            options?.onSuccess?.(data, variables, context);
         },
     });
 };

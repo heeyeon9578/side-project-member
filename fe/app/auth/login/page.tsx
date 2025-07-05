@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -5,8 +6,27 @@ import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Github } from "lucide-react"
 import Link from "next/link"
+import { useState } from "react"
+import { login } from "@/lib/api/login"
+import { useRouter } from "next/navigation"
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  /**
+   * 로그인 핸들러
+   */
+  const handleSubmit = async () => {
+    const response = await login(email, password);
+    console.log('🔍 [handleSubmit] response →', response);
+    if (response.accessToken) {
+      // localStorage.setItem('accessToken', response.accessToken);
+       router.push('/');
+    }
+  };
+
   return (
     <div className="container max-w-md mx-auto px-4 py-16">
       <Card>
@@ -17,7 +37,7 @@ export default function LoginPage() {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">이메일</Label>
-            <Input id="email" type="email" placeholder="example@email.com" />
+            <Input id="email" type="email" placeholder="example@email.com" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
@@ -26,9 +46,9 @@ export default function LoginPage() {
                 비밀번호를 잊으셨나요?
               </Link>
             </div>
-            <Input id="password" type="password" />
+            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호를 입력해주세요" />
           </div>
-          <Button className="w-full">로그인</Button>
+          <Button className="w-full" onClick={handleSubmit}>로그인</Button>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <Separator />

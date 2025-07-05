@@ -10,8 +10,18 @@ import Link from "next/link"
 import { useCreateUser } from "@/app/queries/userQueries"
 import { RegisterUserInput } from "@/lib/type/user"
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation";
 export default function RegisterPage() {
-  const { mutate: createUser } = useCreateUser();
+  const router = useRouter(); // 페이지 이동 함수
+
+  const { mutate: createUser } = useCreateUser(
+    {
+      onSuccess: () => {
+        console.log("✅ 회원가입 성공! 🎉");
+        router.push("/"); // 원하는 경로로 이동
+      },
+    }
+  );
 
   const [formData, setFormData] = useState<RegisterUserInput>({
     name: "",
@@ -54,6 +64,14 @@ export default function RegisterPage() {
    */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (formData.password.length < 6) {
+      alert("비밀번호는 최소 6자 이상이어야 합니다.");
+      return;
+    }
+    // if (formData.password !== confirmPassword) {
+    //   alert("비밀번호가 일치하지 않습니다.");
+    //   return;
+    // }
     createUser(formData);
   };
 
@@ -70,7 +88,7 @@ export default function RegisterPage() {
 
         </CardHeader>
         <CardContent className="space-y-4">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="firstName">이름</Label>
