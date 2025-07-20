@@ -23,7 +23,7 @@ export default function LoginPage() {
     console.log('🔍 [handleSubmit] response →', response);
     if (response.accessToken) {
       // localStorage.setItem('accessToken', response.accessToken);
-       router.push('/');ㄹㄹㄹㄹㄹㄹㄹㄹㄹ
+       router.push('/');
     }
   };
 
